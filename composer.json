@@ -2,5 +2,5 @@
     "name": "zombielifestyle/whack",
     "description": "web hacking nano library",
     "keywords": ["http","rest","routing","dependecy injection"],
-    "license": "MIT",
+    "license": "MIT"
 }
