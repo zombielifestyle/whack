@@ -6,6 +6,7 @@ class RestController {
         $this->router = $router;
         $this->wire = $wire;
         $this->response = $response;
+        $response->header('X-Powered-By', 'whack/alpha');
         $this->params = $params;
     }
 
