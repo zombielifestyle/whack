@@ -5,7 +5,7 @@ require __DIR__.'/bootstrap.php';
 class RouterTest extends PHPUnit_Framework_TestCase {
 
     function setUp() {
-        $server = array('HTTP_METHOD' => 'GET');
+        $server = array('REQUEST_METHOD' => 'GET');
         $this->router = new Router($server);
     }
 

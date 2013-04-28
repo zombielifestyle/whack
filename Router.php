@@ -6,8 +6,8 @@ class Router {
 
     function __construct($server) {
         $this->method = $server;
-        if (isset($server['HTTP_METHOD'])) {
-            $this->method = strtolower($server['HTTP_METHOD']);
+        if (isset($server['REQUEST_METHOD'])) {
+            $this->method = strtolower($server['REQUEST_METHOD']);
         }
     }
 
