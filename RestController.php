@@ -12,12 +12,15 @@ class RestController {
 
     function dispatch($uri) {
         $uri = parse_url($uri);
-        parse_str($uri['query'], $uri['query']);
+        $query = array();
+        if (isset($uri['query'])) {
+            parse_str($uri['query'], $query);
+        }
         $route = $this->router->route($uri['path']);
         if ($route) {
             $this->response->status = 200;
             $this->params->info = $route;
-            $this->params->get = $uri['query'];
+            $this->params->get = $query;
             $action = $route['payload'];
             try {
                 if (!is_callable($action) && is_file($action)) {
