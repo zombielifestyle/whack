@@ -36,5 +36,16 @@ class Wire {
 	function __isset($key){
 		return isset($this->refs[$key]);
 	}
+
+	function call($closure) {
+        $ref = new ReflectionFunction($closure);
+        $refParams = $ref->getParameters();
+        $params = array();
+        foreach ($refParams as $param) {
+            $paramName = $param->getName();
+            $params[] = $this->$paramName;
+        }     
+        return call_user_func_array($closure, $params);
+	}
 	
 }

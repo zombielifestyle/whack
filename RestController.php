@@ -10,17 +10,20 @@ class RestController {
         $this->params = $params;
     }
 
-    function dispatch($path) {
-        $route = $this->router->route($path);
+    function dispatch($uri) {
+        $uri = parse_url($uri);
+        parse_str($uri['query'], $uri['query']);
+        $route = $this->router->route($uri['path']);
         if ($route) {
             $this->response->status = 200;
             $this->params->info = $route;
+            $this->params->get = $uri['query'];
             $action = $route['payload'];
             try {
                 if (!is_callable($action) && is_file($action)) {
                     $action = require $action;
                 }
-                call_user_func_array($action, $this->getClosureParameters($action));
+                $this->wire->call($action);
             } catch (Exception $e) {
                 $this->response->status = 500;
                 $this->response->exception = $e;
@@ -29,17 +32,6 @@ class RestController {
             $this->response->status = 404;
         }
         return $this->response;
-    }
-
-    protected function getClosureParameters($closure) {
-        $ref = new ReflectionFunction($closure);
-        $refParams = $ref->getParameters();
-        $params = array();
-        foreach ($refParams as $param) {
-            $paramName = $param->getName();
-            $params[] = $this->wire->$paramName;
-        }
-        return $params;
     }
 
 }
